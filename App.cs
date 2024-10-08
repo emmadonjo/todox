@@ -1,2 +1,12 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Todox;
+
+namespace Todox
+{
+    public class App
+    {
+        public static void Main()
+        {
+            Runner.Run();
+        }
+    }
+}

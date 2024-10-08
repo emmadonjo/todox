@@ -1,4 +1,5 @@
 ﻿using System;
+using Todox.Store;
 
 namespace Todox
 {
@@ -39,6 +40,7 @@ namespace Todox
                 case "1":
                     break;
                 case "2":
+                    Add();
                     break;
                 case "3":
                     break;
@@ -54,6 +56,30 @@ namespace Todox
             }
         }
 
+        protected static void Add()
+        {
+            var title = GetTitle();
+            var priority = GetPriority();
+
+            var todo = new Todo
+            {
+                Title = title,
+                Priority = priority,
+                Id = RandomInt(),
+                CreatedAt = DateTime.Now
+            };
+
+            if (!Storage.Init().Add(todo))
+            {
+                Console.WriteLine("Todo could not be added.\n");
+
+                Add();
+            }
+
+            Console.WriteLine("Todo added successfully.\n");
+            Run();
+        }
+
         protected static void DisplayActions()
         {
             Console.WriteLine("Input a number for your preferred action");
@@ -61,6 +87,50 @@ namespace Todox
             {
                 Console.WriteLine("{0} - {1}", key, value);
             }
+        }
+
+        protected static string GetTitle(int maxLength = 100)
+        {
+            var title = "";
+            while (string.IsNullOrWhiteSpace(title) || title.Length > maxLength)
+            {
+                Console.Write("Enter title: ");
+                title = Console.ReadLine();
+            }
+
+            return title;
+        }
+
+        protected static string GetPriority()
+        {
+            Console.Write("Enter priority - low, normal, high: ");
+            var priority = Console.ReadLine();
+
+            while (
+                !string.IsNullOrWhiteSpace(priority)
+                && (
+                    priority.ToLower() != "low"
+                    && priority.ToUpper() != "normal"
+                    && priority.ToLower() != "high"
+            ))
+            {
+                Console.Write("Enter priority - low, normal, high: ");
+                priority = Console.ReadLine();
+            }
+
+            if (string.IsNullOrWhiteSpace(priority))
+            {
+                priority = "normal";
+            }
+
+            return priority.ToLower();
+        }
+
+        protected static int RandomInt(int min = 10000, int max = 99999)
+        {
+            var random = new Random();
+
+            return random.Next(min, max);
         }
     }
 }
