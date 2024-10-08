@@ -40,6 +40,29 @@ namespace Todox.Store.Drivers
             return true;
         }
 
+        public bool Update(Todo todo)
+        {
+            var todos = Load();
+            if (todos.Count == 0)
+            {
+                return false;
+            }
+
+            int index = todos.FindIndex(todo => todo.Id == todo.Id);
+
+            if (index == -1)
+            {
+                return false;
+            }
+
+            todos[index] = todo;
+            Save(todos);
+
+
+            return true;
+
+        }
+
         protected void Save(List<Todo> todos)
         {
             var data = JsonSerializer.Serialize(todos, new JsonSerializerOptions { WriteIndented = true });

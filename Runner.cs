@@ -30,7 +30,7 @@ namespace Todox
                 Run();
             }
 
-            if (!Actions.Keys.Contains(action))
+            if (!Actions.ContainsKey(action))
             {
                 Console.WriteLine("Please enter a valid number");
                 Run();
@@ -48,6 +48,7 @@ namespace Todox
                     Find();
                     break;
                 case "4":
+                    Update();
                     break;
                 case "5":
                     break;
@@ -128,6 +129,40 @@ namespace Todox
             Run();
         }
 
+        public static void Update()
+        {
+            var todo = GetOneById();
+
+            if (todo == null)
+            {
+                Console.WriteLine("No todo was found\n");
+
+                Run();
+            }
+
+            var title = GetTitle();
+            var priority = GetPriority(todo?.Priority);
+
+
+            todo.Title = title;
+            todo.Priority = priority;
+
+
+            if (Storage.Init().Update(todo))
+            {
+                Console.WriteLine("Todo updated successfully.\n");
+            }
+            else
+            {
+                Console.WriteLine("Todo could not be updated.\n");
+
+                Update();
+            }
+
+            Run();
+
+        }
+
         protected static void DisplayActions()
         {
             Console.WriteLine("Input a number for your preferred action");
@@ -149,7 +184,7 @@ namespace Todox
             return title;
         }
 
-        protected static string GetPriority()
+        protected static string GetPriority(string? defaultPriority = null)
         {
             Console.Write("Enter priority - low, normal, high: ");
             var priority = Console.ReadLine();
@@ -168,7 +203,7 @@ namespace Todox
 
             if (string.IsNullOrWhiteSpace(priority))
             {
-                priority = "normal";
+                priority = defaultPriority ?? "normal";
             }
 
             return priority.ToLower();

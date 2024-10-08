@@ -7,5 +7,6 @@ namespace Todox.Store
         List<Todo> All();
         Todo? GetById(int id);
         bool Add(Todo todo);
+        bool Update(Todo todo);
     }
 }
