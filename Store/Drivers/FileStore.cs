@@ -13,6 +13,25 @@ namespace Todox.Store.Drivers
             return Load();
         }
 
+        public Todo? GetById(int id) {
+            var todos = Load();
+
+            if (todos.Count == 0)
+            {
+                return null;
+            }
+
+            var todo = todos.Find(todo => todo.Id == id);
+
+            if (todo == null)
+            {
+                return null;
+            }
+
+            return todo;
+
+        }
+
         public bool Add(Todo todo)
         {
             var todos = Load();

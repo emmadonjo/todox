@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Todox.Store;
 
 namespace Todox
@@ -44,6 +45,7 @@ namespace Todox
                     Add();
                     break;
                 case "3":
+                    Find();
                     break;
                 case "4":
                     break;
@@ -79,7 +81,30 @@ namespace Todox
             Run();
         }
 
-            protected static void Add()
+        public static void Find()
+        {
+            var todo = GetOneById();
+
+            if (todo == null)
+            {
+                Console.WriteLine("No todo was found\n");
+
+                Run();
+            }
+
+            Console.WriteLine("\n");
+            Console.WriteLine("Todo successfully retrieved. Below are the details");
+            Console.WriteLine("ID: {0}", todo?.Id);
+            Console.WriteLine("TITLE: {0}", todo?.Title);
+            Console.WriteLine("PRIORITY: {0}", todo?.Priority);
+            Console.WriteLine("DATE ADDED: {0}", todo?.CreatedAt);
+
+            Console.WriteLine("\n");
+            Run();
+
+        }
+
+        protected static void Add()
         {
             var title = GetTitle();
             var priority = GetPriority();
@@ -154,6 +179,24 @@ namespace Todox
             var random = new Random();
 
             return random.Next(min, max);
+        }
+
+        protected static Todo? GetOneById()
+        {
+            var id = "";
+
+            while (string.IsNullOrWhiteSpace(id))
+            {
+                Console.Write("Enter the ID: ");
+                id = Console.ReadLine();
+            }
+
+            if (int.TryParse(id, out int key))
+            {
+                return Storage.Init().GetById(Convert.ToInt32(key));
+            }
+
+            return null;
         }
     }
 }
