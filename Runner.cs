@@ -51,6 +51,7 @@ namespace Todox
                     Update();
                     break;
                 case "5":
+                    Remove();
                     break;
                 case "6":
                     break;
@@ -148,6 +149,8 @@ namespace Todox
             todo.Priority = priority;
 
 
+            Console.WriteLine("\n");
+
             if (Storage.Init().Update(todo))
             {
                 Console.WriteLine("Todo updated successfully.\n");
@@ -161,6 +164,33 @@ namespace Todox
 
             Run();
 
+        }
+
+        public static void Remove()
+        {
+            var todo = GetOneById();
+
+            if (todo == null)
+            {
+                Console.WriteLine("No todo was found\n");
+
+                Run();
+            }
+
+            Console.WriteLine("\n");
+
+            if (Storage.Init().Delete(todo))
+            {
+                Console.WriteLine("Todo successfully removed.\n");
+            }
+            else
+            {
+                Console.WriteLine("Todo could not be removed.\n");
+
+                Remove();
+            }
+
+            Run();
         }
 
         protected static void DisplayActions()

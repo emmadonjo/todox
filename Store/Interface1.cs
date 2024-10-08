@@ -8,5 +8,6 @@ namespace Todox.Store
         Todo? GetById(int id);
         bool Add(Todo todo);
         bool Update(Todo todo);
+        bool Delete(Todo todo);
     }
 }

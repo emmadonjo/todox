@@ -48,7 +48,7 @@ namespace Todox.Store.Drivers
                 return false;
             }
 
-            int index = todos.FindIndex(todo => todo.Id == todo.Id);
+            int index = todos.FindIndex(t => t.Id == todo.Id);
 
             if (index == -1)
             {
@@ -60,7 +60,23 @@ namespace Todox.Store.Drivers
 
 
             return true;
+        }
 
+        public bool Delete(Todo todo)
+        {
+            var todos = Load();
+            var index = todos.FindIndex(t => t.Id == todo.Id);
+
+            if (index == -1)
+            {
+                return false;
+            }
+
+            todos.RemoveAt(index);
+
+            Save(todos);
+
+            return true;
         }
 
         protected void Save(List<Todo> todos)
