@@ -8,6 +8,11 @@ namespace Todox.Store.Drivers
     {
         readonly string filePath = "todos.json";
 
+        public List<Todo> All()
+        {
+            return Load();
+        }
+
         public bool Add(Todo todo)
         {
             var todos = Load();

@@ -38,6 +38,7 @@ namespace Todox
             switch(action)
             {
                 case "1":
+                    All();
                     break;
                 case "2":
                     Add();
@@ -56,7 +57,29 @@ namespace Todox
             }
         }
 
-        protected static void Add()
+        protected static void All()
+        {
+            var todos = Storage.Init().All();
+
+            if (todos.Count == 0)
+            {
+                Console.WriteLine("No todo has been added yet.\n");
+                Run();
+            }
+
+            Console.WriteLine("ID | TITLE | PRIORITY | DATE ADDED");
+
+            foreach (var todo in todos)
+            {
+                Console.WriteLine("{0} | {1} | {2} | {3}", todo.Id, todo.Title, todo.Priority, todo.CreatedAt);
+            }
+
+            Console.WriteLine("\n");
+
+            Run();
+        }
+
+            protected static void Add()
         {
             var title = GetTitle();
             var priority = GetPriority();
