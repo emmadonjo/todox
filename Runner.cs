@@ -6,7 +6,8 @@ namespace Todox
 {
     public class Runner
     {
-        protected static Dictionary<string, string> Actions = new Dictionary<string, string> {
+        readonly static Dictionary<string, string> Actions = new()
+        {
             {"1", "All" },
             {"2", "Add" },
             {"3", "Find" },
@@ -221,11 +222,12 @@ namespace Todox
 
             while (
                 !string.IsNullOrWhiteSpace(priority)
-                && (
-                    priority.ToLower() != "low"
-                    && priority.ToUpper() != "normal"
-                    && priority.ToLower() != "high"
-            ))
+                && !(priority.Equals("low"
+, StringComparison.CurrentCultureIgnoreCase)
+                    || priority.Equals("normal"
+, StringComparison.CurrentCultureIgnoreCase)
+                    || priority.Equals("high"
+, StringComparison.CurrentCultureIgnoreCase)))
             {
                 Console.Write("Enter priority - low, normal, high: ");
                 priority = Console.ReadLine();
@@ -258,7 +260,7 @@ namespace Todox
 
             if (int.TryParse(id, out int key))
             {
-                return Storage.Init().GetById(Convert.ToInt32(key));
+                return Storage.Init().GetById(key);
             }
 
             return null;

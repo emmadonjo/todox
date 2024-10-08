@@ -81,7 +81,7 @@ namespace Todox.Store.Drivers
 
         protected void Save(List<Todo> todos)
         {
-            var data = JsonSerializer.Serialize(todos, new JsonSerializerOptions { WriteIndented = true });
+            string data = JsonSerializer.Serialize(todos, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(filePath, data);
         }
 
